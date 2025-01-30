@@ -1,10 +1,12 @@
 name: Deploy to Minikube using GitHub Actions
 
-on: [push]
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   job1:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
     name: build Node.js Docker Image and deploy to minikube
     steps:
     - uses: actions/checkout@v2
