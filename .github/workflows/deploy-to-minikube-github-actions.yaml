@@ -25,4 +25,5 @@ jobs:
     - name: Test service URLs
       run: |
           minikube service list
+          minikube kubectl -- wait --for=condition=ready pod -l app=nodejs-app --timeout=200s
           minikube service nodejs-app --url
