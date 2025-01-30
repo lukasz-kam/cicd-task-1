@@ -1,6 +1,8 @@
 name: Deploy to Minikube using GitHub Actions
 
-on: [push]
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   job1:
