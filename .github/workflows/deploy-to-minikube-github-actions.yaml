@@ -2,6 +2,8 @@ name: Deploy to Minikube using GitHub Actions
 
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:

@@ -1,0 +1,30 @@
+name: Self-Hosted Runner Workflow
+
+on:
+  push:
+    branches:
+      - self-hosted-runner
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Check current user
+        run: whoami
+      - uses: actions/checkout@v4
+      - name: Try the cluster !
+        run: kubectl get pods -A
+      - name: Build image
+        run: |
+            docker build -f ./Dockerfile -t devopshint/node-app:latest .
+            echo -n "verifying images:"
+            docker images
+      - name: Deploy to minikube
+        run:
+          kubectl apply -f k8s-node-app.yaml
+      - name: Test service URLs
+        run: |
+            minikube service list
+            minikube kubectl -- wait --for=condition=ready pod -l app=nodejs-app --timeout=200s
+            minikube service nodejs-app --url
