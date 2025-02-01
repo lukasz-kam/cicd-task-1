@@ -21,9 +21,18 @@ jobs:
           docker build -f ./Dockerfile -t devopshint/node-app:latest .
           echo -n "verifying images:"
           docker images
+    - name: Get minikube status
+      run: minikube status
+    - name: Check docker images
+      run: |
+          export SHELL=/bin/bash
+          eval $(minikube -p minikube docker-env)
+          docker images
     - name: Deploy to minikube
       run:
         kubectl apply -f k8s-node-app.yaml
+    - name: Get pod status
+      run: sleep 5; kubectl get pods --no-headers | awk '{print $1}' | kubectl describe pod
     - name: Test service URLs
       run: |
           minikube service list
