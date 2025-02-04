@@ -28,3 +28,5 @@ jobs:
             minikube service list
             minikube kubectl -- wait --for=condition=ready pod -l app=nodejs-app --timeout=200s
             minikube service nodejs-app --url
+      - name: Clean up the cluster
+        run: kubectl delete -f k8s-node-app.yaml
